@@ -2,9 +2,11 @@
 // SUPABASE CONFIG
 // ========================================
 
-const SUPABASE_URL = "https://pzhdivxuwrccqyscsvqa.supabase.co";
+const SUPABASE_URL =
+    "https://pzhdivxuwrccqyscsvqa.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_X-dkmQTQJrdavJm8Jfv7uA_bHSaCRym";
+const SUPABASE_KEY =
+    "sb_publishable_X-dkmQTQJrdavJm8Jfv7uA_bHSaCRym";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -17,6 +19,7 @@ const supabaseClient = window.supabase.createClient(
 // ========================================
 
 async function loadProfile() {
+
     const { data, error } = await supabaseClient
         .from("profile")
         .select("*")
@@ -28,17 +31,48 @@ async function loadProfile() {
         return;
     }
 
+    // Name
     document.getElementById("profile-name").textContent =
         data.name || "Utkarsh Kumar";
 
+    // Headline
     document.getElementById("profile-headline").textContent =
         data.headline || "";
 
+    // About
     document.getElementById("profile-about").textContent =
         data.about || "";
 
     document.getElementById("about-text").textContent =
         data.about || "";
+
+
+    // ========================================
+    // PROFILE IMAGE
+    // ========================================
+
+    const profileImage =
+        document.getElementById("profile-image");
+
+    if (data.profile_image) {
+
+        profileImage.src = data.profile_image;
+
+        profileImage.alt =
+            data.name
+                ? `${data.name} Profile Photo`
+                : "Profile Photo";
+
+        profileImage.style.display = "block";
+
+    } else {
+
+        profileImage.style.display = "none";
+
+        console.warn(
+            "Profile image URL is empty."
+        );
+    }
 }
 
 
@@ -47,41 +81,61 @@ async function loadProfile() {
 // ========================================
 
 async function loadEducation() {
+
     const container =
-        document.getElementById("education-container");
+        document.getElementById(
+            "education-container"
+        );
 
     const { data, error } = await supabaseClient
         .from("education")
         .select("*")
-        .order("start_year", { ascending: false });
+        .order("start_year", {
+            ascending: false
+        });
 
     if (error) {
-        console.error("Education error:", error);
+
+        console.error(
+            "Education error:",
+            error
+        );
+
         container.innerHTML =
             "<p>Education can not be loaded.</p>";
+
         return;
     }
 
     if (!data || data.length === 0) {
+
         container.innerHTML =
             "<p>No education details available.</p>";
+
         return;
     }
 
     container.innerHTML = "";
 
     data.forEach((item) => {
-        const card = document.createElement("div");
 
-        card.className = "education-card";
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "education-card";
 
         const years =
-            item.start_year || item.end_year
+            item.start_year ||
+            item.end_year
                 ? `${item.start_year || ""} - ${item.end_year || "Present"}`
                 : "";
 
         card.innerHTML = `
-            <h3>${escapeHTML(item.degree)}</h3>
+
+            <h3>
+                ${escapeHTML(item.degree)}
+            </h3>
 
             <p>
                 <strong>
@@ -101,6 +155,7 @@ async function loadEducation() {
             <p>
                 ${escapeHTML(item.description)}
             </p>
+
         `;
 
         container.appendChild(card);
@@ -113,40 +168,60 @@ async function loadEducation() {
 // ========================================
 
 async function loadSkills() {
+
     const container =
-        document.getElementById("skills-container");
+        document.getElementById(
+            "skills-container"
+        );
 
     const { data, error } = await supabaseClient
         .from("skills")
         .select("*")
-        .order("level", { ascending: false });
+        .order("level", {
+            ascending: false
+        });
 
     if (error) {
-        console.error("Skills error:", error);
+
+        console.error(
+            "Skills error:",
+            error
+        );
+
         container.innerHTML =
             "<p>Skills can not be loaded.</p>";
+
         return;
     }
 
     if (!data || data.length === 0) {
+
         container.innerHTML =
             "<p>No skills available.</p>";
+
         return;
     }
 
     container.innerHTML = "";
 
     data.forEach((skill) => {
+
         const level = Math.min(
             100,
-            Math.max(0, Number(skill.level) || 0)
+            Math.max(
+                0,
+                Number(skill.level) || 0
+            )
         );
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
-        card.className = "skill-card";
+        card.className =
+            "skill-card";
 
         card.innerHTML = `
+
             <h3>
                 ${escapeHTML(skill.name)}
             </h3>
@@ -156,13 +231,16 @@ async function loadSkills() {
             </p>
 
             <div class="skill-bar">
+
                 <div
                     class="skill-progress"
                     style="width: ${level}%"
                 ></div>
+
             </div>
 
             <small>${level}%</small>
+
         `;
 
         container.appendChild(card);
@@ -175,100 +253,150 @@ async function loadSkills() {
 // ========================================
 
 async function loadProjects() {
+
     const container =
-        document.getElementById("projects-container");
+        document.getElementById(
+            "projects-container"
+        );
 
     const { data, error } = await supabaseClient
         .from("projects")
         .select("*")
-        .order("display_order", { ascending: true });
+        .order("display_order", {
+            ascending: true
+        });
 
     if (error) {
-        console.error("Projects error:", error);
+
+        console.error(
+            "Projects error:",
+            error
+        );
+
         container.innerHTML =
             "<p>Projects can not be loaded.</p>";
+
         return;
     }
 
     if (!data || data.length === 0) {
+
         container.innerHTML =
             "<p>No projects available.</p>";
+
         return;
     }
 
     container.innerHTML = "";
 
     data.forEach((project) => {
-        const card = document.createElement("div");
 
-        card.className = "project-card";
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "project-card";
+
+
+        // Project Image
 
         let imageHTML = "";
 
         if (project.image_url) {
+
             imageHTML = `
+
                 <img
-                    src="${escapeAttribute(project.image_url)}"
-                    alt="${escapeAttribute(project.title)}"
+                    src="${escapeAttribute(
+                        project.image_url
+                    )}"
+                    alt="${escapeAttribute(
+                        project.title
+                    )}"
                     style="
                         width: 100%;
                         border-radius: 8px;
                         margin-bottom: 15px;
                     "
                 >
+
             `;
         }
+
+
+        // Project Links
 
         let linksHTML = "";
 
         if (project.github_url) {
+
             linksHTML += `
+
                 <a
-                    href="${escapeAttribute(project.github_url)}"
+                    href="${escapeAttribute(
+                        project.github_url
+                    )}"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     GitHub →
                 </a>
+
             `;
         }
 
         if (project.live_url) {
+
             linksHTML += `
+
                 <a
-                    href="${escapeAttribute(project.live_url)}"
+                    href="${escapeAttribute(
+                        project.live_url
+                    )}"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     Live Demo →
                 </a>
+
             `;
         }
 
+
+        // Project Card
+
         card.innerHTML = `
+
             ${imageHTML}
 
             <h3>
-                ${escapeHTML(project.title)}
+                ${escapeHTML(
+                    project.title
+                )}
             </h3>
 
             <p>
-                ${escapeHTML(project.description)}
+                ${escapeHTML(
+                    project.description
+                )}
             </p>
 
             <p class="project-tech">
-                ${escapeHTML(project.technologies)}
+                ${escapeHTML(
+                    project.technologies
+                )}
             </p>
 
             ${
                 linksHTML
                     ? `
-                    <div class="project-links">
-                        ${linksHTML}
-                    </div>
+                        <div class="project-links">
+                            ${linksHTML}
+                        </div>
                     `
                     : ""
             }
+
         `;
 
         container.appendChild(card);
@@ -281,16 +409,25 @@ async function loadProjects() {
 // ========================================
 
 async function loadCertificates() {
+
     const container =
-        document.getElementById("certificates-container");
+        document.getElementById(
+            "certificates-container"
+        );
 
     const { data, error } = await supabaseClient
         .from("certificates")
         .select("*")
-        .order("display_order", { ascending: true });
+        .order("display_order", {
+            ascending: true
+        });
 
     if (error) {
-        console.error("Certificates error:", error);
+
+        console.error(
+            "Certificates error:",
+            error
+        );
 
         container.innerHTML =
             "<p>Certificates can not be loaded.</p>";
@@ -299,6 +436,7 @@ async function loadCertificates() {
     }
 
     if (!data || data.length === 0) {
+
         container.innerHTML =
             "<p>No certificates available.</p>";
 
@@ -308,14 +446,22 @@ async function loadCertificates() {
     container.innerHTML = "";
 
     data.forEach((certificate) => {
-        const card = document.createElement("div");
 
-        card.className = "certificate-card";
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "certificate-card";
+
+
+        // Certificate Image
 
         let imageHTML = "";
 
         if (certificate.certificate_image) {
+
             imageHTML = `
+
                 <img
                     src="${escapeAttribute(
                         certificate.certificate_image
@@ -329,65 +475,88 @@ async function loadCertificates() {
                         margin-bottom: 15px;
                     "
                 >
+
             `;
         }
+
+
+        // Issue Date
 
         let issueDate = "";
 
         if (certificate.issue_date) {
-            issueDate = new Date(
-                certificate.issue_date
-            ).toLocaleDateString("en-IN", {
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            });
+
+            issueDate =
+                new Date(
+                    certificate.issue_date
+                ).toLocaleDateString(
+                    "en-IN",
+                    {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    }
+                );
         }
 
+
+        // Certificate Card
+
         card.innerHTML = `
+
             ${imageHTML}
 
             <h3>
-                ${escapeHTML(certificate.title)}
+                ${escapeHTML(
+                    certificate.title
+                )}
             </h3>
 
             <p>
                 Issued by:
+
                 <strong>
-                    ${escapeHTML(certificate.issuer)}
+                    ${escapeHTML(
+                        certificate.issuer
+                    )}
                 </strong>
             </p>
 
             ${
                 issueDate
                     ? `
-                    <p>
-                        Issued:
-                        ${escapeHTML(issueDate)}
-                    </p>
+                        <p>
+                            Issued:
+                            ${escapeHTML(
+                                issueDate
+                            )}
+                        </p>
                     `
                     : ""
             }
 
             <p>
-                ${escapeHTML(certificate.description)}
+                ${escapeHTML(
+                    certificate.description
+                )}
             </p>
 
             ${
                 certificate.credential_url
                     ? `
-                    <a
-                        href="${escapeAttribute(
-                            certificate.credential_url
-                        )}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Verify Certificate →
-                    </a>
+                        <a
+                            href="${escapeAttribute(
+                                certificate.credential_url
+                            )}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Verify Certificate →
+                        </a>
                     `
                     : ""
             }
+
         `;
 
         container.appendChild(card);
@@ -400,57 +569,80 @@ async function loadCertificates() {
 // ========================================
 
 async function handleContactForm(event) {
+
     event.preventDefault();
 
     const status =
-        document.getElementById("form-status");
+        document.getElementById(
+            "form-status"
+        );
 
     const name =
         document
-            .getElementById("contact-name")
+            .getElementById(
+                "contact-name"
+            )
             .value
             .trim();
 
     const email =
         document
-            .getElementById("contact-email")
+            .getElementById(
+                "contact-email"
+            )
             .value
             .trim();
 
     const subject =
         document
-            .getElementById("contact-subject")
+            .getElementById(
+                "contact-subject"
+            )
             .value
             .trim();
 
     const message =
         document
-            .getElementById("contact-message")
+            .getElementById(
+                "contact-message"
+            )
             .value
             .trim();
 
+
     if (!name || !email || !message) {
+
         status.textContent =
             "Please fill all required fields.";
 
         return;
     }
 
-    status.textContent = "Sending...";
 
-    const { error } = await supabaseClient
-        .from("messages")
-        .insert([
-            {
-                name: name,
-                email: email,
-                subject: subject || null,
-                message: message
-            }
-        ]);
+    status.textContent =
+        "Sending...";
+
+
+    const { error } =
+        await supabaseClient
+            .from("messages")
+            .insert([
+                {
+                    name: name,
+                    email: email,
+                    subject:
+                        subject || null,
+                    message: message
+                }
+            ]);
+
 
     if (error) {
-        console.error("Message error:", error);
+
+        console.error(
+            "Message error:",
+            error
+        );
 
         status.textContent =
             "Message send nahi hua.";
@@ -458,11 +650,15 @@ async function handleContactForm(event) {
         return;
     }
 
+
     status.textContent =
         "Message successfully sent!";
 
+
     document
-        .getElementById("contact-form")
+        .getElementById(
+            "contact-form"
+        )
         .reset();
 }
 
@@ -472,15 +668,33 @@ async function handleContactForm(event) {
 // ========================================
 
 function escapeHTML(value) {
+
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
+
 function escapeAttribute(value) {
+
     return escapeHTML(value);
 }
 
@@ -491,17 +705,27 @@ function escapeAttribute(value) {
 
 async function initializePortfolio() {
 
-    console.log("Loading portfolio data...");
+    console.log(
+        "Loading portfolio data..."
+    );
 
     await Promise.all([
+
         loadProfile(),
+
         loadEducation(),
+
         loadSkills(),
+
         loadProjects(),
+
         loadCertificates()
+
     ]);
 
-    console.log("Portfolio loading complete!");
+    console.log(
+        "Portfolio loading complete!"
+    );
 }
 
 
