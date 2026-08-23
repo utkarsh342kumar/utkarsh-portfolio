@@ -29,11 +29,24 @@
     <!-- Hero -->
     <main id="home">
         <section class="hero">
-            <div>
-                <p class="eyebrow">B.Tech (Hons.) CSE Student</p>
+
+            <div class="hero-content">
+
+                <!-- Profile Image from Supabase -->
+                <img
+                    id="profile-image"
+                    class="profile-image"
+                    src=""
+                    alt="Utkarsh Kumar"
+                >
+
+                <p class="eyebrow">
+                    B.Tech (Hons.) CSE Student
+                </p>
 
                 <h1>
-                    Hi, I'm <span id="profile-name">Utkarsh Kumar</span>
+                    Hi, I'm
+                    <span id="profile-name">Utkarsh Kumar</span>
                 </h1>
 
                 <h2 id="profile-headline">
@@ -47,7 +60,9 @@
                 <a href="#projects" class="btn">
                     View My Projects
                 </a>
+
             </div>
+
         </section>
 
         <!-- About -->
@@ -85,6 +100,7 @@
             <h2>Contact Me</h2>
 
             <form id="contact-form">
+
                 <input
                     type="text"
                     id="contact-name"
@@ -112,21 +128,28 @@
                     required
                 ></textarea>
 
-                <button type="submit">Send Message</button>
+                <button type="submit">
+                    Send Message
+                </button>
 
                 <p id="form-status"></p>
+
             </form>
         </section>
+
     </main>
 
+    <!-- Footer -->
     <footer>
-        <p>© 2026 Utkarsh Kumar. All rights reserved.</p>
+        <p>
+            © 2026 Utkarsh Kumar. All rights reserved.
+        </p>
     </footer>
 
-    <!-- Supabase JavaScript library -->
+    <!-- Supabase JavaScript Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Our JavaScript -->
+    <!-- Your JavaScript -->
     <script src="script.js"></script>
 
 </body>
